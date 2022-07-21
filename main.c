@@ -2,6 +2,6 @@ include <stdio.h>
 include <conio.h>
 
 void main{
-    printf("teste");
+    printf("teste 2");
 
 }
