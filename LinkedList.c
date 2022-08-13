@@ -103,14 +103,43 @@ void* top(LinkedList *list){
     void* data = aux->data;
     return data;
 }
-int addAll(LinkedList *listDest, int pos, LinkedList *listSource){
-    if(isEmpty(listSource)){
+
+void * add(LinkedList *listDest, int pos, void* data){
+    if(isEmpty(listDest)){
         return -1;
     }
+    Node* aux = listDest->first;
     int i=0;
-    LinkedList union;
-    init(&union);
-    while(){
+    while(i<pos){
+        aux=aux->next;
     }
-    
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    newNode->data=data;
+    newNode->next->aux->next;
+    aux-next->newNode;
+
+
+}
+
+
+int addAll(LinkedList *listDest, int pos, LinkedList *listSource){
+    if(isEmpty(listSource) || isEmpty(listDest)){
+        return -1;
+    }
+    int=0
+    Node *auxBegin = listSource->first;
+    Node *auxEnd=NULL;
+    while(i<pos){
+        auxBegin=auxBegin->next;
+        i++;
+    }
+    auxEnd=auxBegin->next;
+    auxBegin->next = listDest->first;
+    auxBegin=listSource->first;
+    while(auxBegin->next!=NULL){
+        auxBegin=auxBegin->next;
+    }
+    auxBegin->next=auxEnd;
+    listSource->size+=listDest->size;
+    return listSource->size;
 }
