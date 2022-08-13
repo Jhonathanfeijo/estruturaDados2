@@ -143,3 +143,14 @@ int addAll(LinkedList *listDest, int pos, LinkedList *listSource){
     listSource->size+=listDest->size;
     return listSource->size;
 }
+
+int indexOf(LinkedList *list, void *data, compare equal){
+    if(isEmpty(list)) return -1;
+    int i=0;
+    Node *aux=list->first;
+    while(aux!=NULL && !equal(aux->data,data)){
+        aux=aux->next;
+        i++;
+    }
+    return (aux==NULL)?-1:i;
+}
