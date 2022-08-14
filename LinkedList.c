@@ -123,9 +123,14 @@ void * add(LinkedList *listDest, int pos, void* data){
 
 
 int addAll(LinkedList *listDest, int pos, LinkedList *listSource){
-    if(isEmpty(listSource) || isEmpty(listDest)){
-        return -1;
+    //Se a lista, que deseja acrescentar na lista fonte, estiver vazia, retorna -1
+    if(isEmpty(listDest)) return -1;
+
+    if(isEmpty(listSource)){
+        listSource=listDest;
+        return listDest->size;
     }
+
     int=0
     Node *auxBegin = listSource->first;
     Node *auxEnd=NULL;
@@ -145,7 +150,10 @@ int addAll(LinkedList *listDest, int pos, LinkedList *listSource){
 }
 
 int indexOf(LinkedList *list, void *data, compare equal){
+    //Verifica se a lista está vazia
     if(isEmpty(list)) return -1;
+    //Se não está vazia, vai comparando data de cada nó até encontrar a posição, 
+    //se não tiver na lista retorna -1;
     int i=0;
     Node *aux=list->first;
     while(aux!=NULL && !equal(aux->data,data)){
@@ -153,4 +161,74 @@ int indexOf(LinkedList *list, void *data, compare equal){
         i++;
     }
     return (aux==NULL)?-1:i;
+}
+Node* getNodeByPos(LinkedList *list, int pos){
+    //Verificando se a lista não está vazia e se posição não é >= tamanho da lista
+    if(isEmpty(list) or pos>=list->size ) return NULL;
+
+    //Retorna primeiro item da lista
+    if(pos<=0) return list->first;
+
+    //Se não for o primeiro item da lista, vai comparando os demais
+    Node * aux=list->first;
+    if(aux==NULL) return NULL;
+    for(int count = 0; (aux!=NULL && count<pos); count++,aux=aux->next);
+    return aux;
+}
+
+void* getPos(LinkedList *list, int pos){
+    
+    if(isEmpty(list)) return -1;
+
+    //Chama getNodeByPos para conseguir o nó daquela posição e, então, o endereço data armazenado naquele nó
+    Node *aux=getNodeByPos(list,pos);
+    void *data = aux->data;
+    if(aux==NULL) return NULL;
+    return aux->data;
+}
+
+void* removePos(LinkedList *list, int pos){
+    //Chama a função dequeue para remover a primeira posição
+    if(pos<=0){
+        return dequeue(list);
+    }
+
+    // Chama nó que está a uma posição anterior da solicitada
+    Node *aux = getNodeByPos(list,pos-1);
+    if(aux==NULL) return -NULL;
+
+    // Coloca o nó posterior de pos como o next do nó posterior de pos
+    Node *removed = aux->next;
+    if(removed=NULL) return NULL;
+    aux->next=removed->next;
+    void *data= removed->data;
+    free(removed);
+    list->size--;
+    return data;
+}
+
+bool removeData(LinkedList *list, void *data, compare equal){
+    if(isEmpty) return -1;
+    
+    // Conseguindo index do Nó
+    int pos=indexOf(list,data,equal);
+
+    if(pos==-1) return false;
+    Node *aux = NULL;
+    Node *removed = NULL;
+
+    // Caso seja a primeira posição, (pos==0), tornaremos o segundo nó em primeiro no LinkedList e posteriormente faremos o free no antigo first->data e no antigo first
+    if(pos==0){
+        aux = list->first;
+        list->first=aux->next;
+        free(aux->data);
+        free(aux);
+        list->size--;
+        return true;
+    }
+    // Caso não atenda as condições anteriores, chamaremos a função removePos que realiza o free no nó e devolve data que estava naquele Nó,
+    // então realizaremos o free no data retornado
+    void *data = removePos(list,pos);
+    free(data);
+    return true;
 }
