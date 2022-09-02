@@ -102,21 +102,16 @@ int indexOf(DoublyLinkedList *list,void *data, compare equal){
 
 Node* getNodeByPos(DoublyLinkedList *list,int pos){
     if(isEmpty(list)) return NULL;
-    if(pos>list->size) return NULL;
-    Node * aux = list->first;
-    for(i=0;i<pos;i++){
+    if(pos>=list->size) return NULL;
+    Node * aux = list->first->next;
+    for(i=0;i<=pos;i++){
     aux=aux->next;
     }
     return aux;
 }
 
 void* getPos(DoublyLinkedList *list,int pos){
-        if(isEmpty(list)) return NULL;
-    if(pos>list->size) return NULL;
-    Node * aux = list->first;
-    for(i=0;i<pos;i++){
-    aux=aux->next;
-    }
+    Node *aux=getNodeByPos(list,pos);
     void *data = aux->data;
     return data;
 }
@@ -162,4 +157,14 @@ bool removeData(DoublyLinkedList *list, void *data, compare equal){
     free(aux);
     return 1;
 
+}
+int addAll(DoublyLinkedList *listDest, int pos, DoublyLinkedList *listSource){
+    Node *aux =getNodeByPos(listSource,pos);
+    if(aux==NULL || isEmpty(listDest)) return -1;
+    listDest->first->previous->next=aux;
+    listDest->first->next->previous=aux->previous;
+    aux->previous->next=listDest->first->next;
+    aux->previous=listDest->first->previous;
+    listSource->size+=listDest->size
+    return listSource->size;
 }
