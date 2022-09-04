@@ -6,13 +6,14 @@ void init(DoublyLinkedList *list){
     Node *newNode =(Node*)malloc(sizeof(Node));
     if(newNode==NULL){
         printf("Memoria insuficiente");
-        break;
-    }
-    newnode->data=NULL;
-    newnode->next=newNode;
-    newnode->previous=newNode;
+        
+    }else{
+    newNode->data=NULL;
+    newNode->next=newNode;
+    newNode->previous=newNode;
     list->first=newNode;
     list->size=0;
+    }
 }
 
 int enqueue(DoublyLinkedList *list, void *data){
@@ -92,7 +93,7 @@ int indexOf(DoublyLinkedList *list,void *data, compare equal){
     if(isEmpty(list)) return -1;
     Node * sentinela = list->first;
     Node *aux= sentinela->next;
-    int contador=0
+    int contador=0;
     while(!equal(data,aux->data) && aux!=sentinela){
         aux=aux->next;
         contador++;
@@ -104,7 +105,7 @@ Node* getNodeByPos(DoublyLinkedList *list,int pos){
     if(isEmpty(list)) return NULL;
     if(pos>=list->size) return NULL;
     Node * aux = list->first->next;
-    for(i=0;i<=pos;i++){
+    for(int i=0;i<=pos;i++){
     aux=aux->next;
     }
     return aux;
@@ -151,9 +152,8 @@ bool removeData(DoublyLinkedList *list, void *data, compare equal){
     if(aux==list->first) return -1;
     aux->next->previous=aux->previous;
     aux->previous->next=aux->next;
-    void*data=aux->data;
-    *data=0;
-    free(data);
+    aux->data=0;
+    free(aux->data);
     free(aux);
     return 1;
 
@@ -165,6 +165,12 @@ int addAll(DoublyLinkedList *listDest, int pos, DoublyLinkedList *listSource){
     listDest->first->next->previous=aux->previous;
     aux->previous->next=listDest->first->next;
     aux->previous=listDest->first->previous;
-    listSource->size+=listDest->size
+    listSource->size+=listDest->size;
     return listSource->size;
+}
+void show(DoublyLinkedList *list, printNode print){
+
+}
+void showMem(DoublyLinkedList *list){
+    
 }

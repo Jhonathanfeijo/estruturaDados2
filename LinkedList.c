@@ -10,7 +10,7 @@ void init (LinkedList *list){
     list->first=NULL;
     list->size=0;
     log_debug("first: %p",list->first);
-    log_debug("size: %p",list-size);
+    log_debug("size: %p",list->size);
     log_trace("init<-");
 }
 
@@ -80,44 +80,15 @@ int push(LinkedList *list, void *data){
     return 1;
 }
 
-void* getPos(LinkedList *list, int pos){
-    if(isEmpty(list)){
-        return -1;
-    }
-    int i=0;
-    Node* aux = list->first;
-    while(i!=list->size && aux->next!=NULL){
-        aux=aux->next;
-    }
-    void *data = aux->data;
-    return data;
-}
-
-void* pop(LinkedList *list){
-    void* data = dequeue(&list);
-    return data;
-}
-
-void* top(LinkedList *list){
-    Node* aux = list->first;
-    void* data = aux->data;
-    return data;
-}
-
-void * add(LinkedList *listDest, int pos, void* data){
+int add(LinkedList *listDest, int pos, void* data){
     if(isEmpty(listDest)){
         return -1;
     }
-    Node* aux = listDest->first;
-    int i=0;
-    while(i<pos){
-        aux=aux->next;
-    }
+    Node* aux = getNodeByPos(listDest,pos-1);
     Node *newNode = (Node*)malloc(sizeof(Node));
-    newNode->data=data;
-    newNode->next->aux->next;
-    aux-next->newNode;
-
+    newNode->next=aux->next;
+    aux->next=newNode;
+    return 1;
 
 }
 
@@ -130,21 +101,12 @@ int addAll(LinkedList *listDest, int pos, LinkedList *listSource){
         listSource=listDest;
         return listDest->size;
     }
-
-    int=0
-    Node *auxBegin = listSource->first;
-    Node *auxEnd=NULL;
-    while(i<pos){
-        auxBegin=auxBegin->next;
-        i++;
-    }
-    auxEnd=auxBegin->next;
+    //auxBegin recebe um nó antes da posição solicitada
+    Node *auxBegin = getNodeByPos(listSource,pos-1);
+    //auxEnd recebe o ultimo nó da lista que será adicionada
+    Node *auxEnd=getNodeByPos(listDest,listDest->size-1);
+    auxEnd->next=auxBegin->next;
     auxBegin->next = listDest->first;
-    auxBegin=listSource->first;
-    while(auxBegin->next!=NULL){
-        auxBegin=auxBegin->next;
-    }
-    auxBegin->next=auxEnd;
     listSource->size+=listDest->size;
     return listSource->size;
 }
@@ -164,7 +126,7 @@ int indexOf(LinkedList *list, void *data, compare equal){
 }
 Node* getNodeByPos(LinkedList *list, int pos){
     //Verificando se a lista não está vazia e se posição não é >= tamanho da lista
-    if(isEmpty(list) or pos>=list->size ) return NULL;
+    if(isEmpty(list) || pos>=list->size ) return NULL;
 
     //Retorna primeiro item da lista
     if(pos<=0) return list->first;
@@ -178,7 +140,7 @@ Node* getNodeByPos(LinkedList *list, int pos){
 
 void* getPos(LinkedList *list, int pos){
     
-    if(isEmpty(list)) return -1;
+    if(isEmpty(list)) return NULL;
 
     //Chama getNodeByPos para conseguir o nó daquela posição e, então, o endereço data armazenado naquele nó
     Node *aux=getNodeByPos(list,pos);
@@ -195,7 +157,7 @@ void* removePos(LinkedList *list, int pos){
 
     // Chama nó que está a uma posição anterior da solicitada
     Node *aux = getNodeByPos(list,pos-1);
-    if(aux==NULL) return -NULL;
+    if(aux==NULL) return NULL;
 
     // Coloca o nó posterior de pos como o next do nó posterior de pos
     Node *removed = aux->next;
@@ -219,16 +181,21 @@ bool removeData(LinkedList *list, void *data, compare equal){
 
     // Caso seja a primeira posição, (pos==0), tornaremos o segundo nó em primeiro no LinkedList e posteriormente faremos o free no antigo first->data e no antigo first
     if(pos==0){
-        aux = list->first;
-        list->first=aux->next;
-        free(aux->data);
-        free(aux);
+        removed=list->first;
+        list->first=removed->next;
+        removed->data=0;
+        free(removed->data);
+        free(removed);
         list->size--;
         return true;
     }
     // Caso não atenda as condições anteriores, chamaremos a função removePos que realiza o free no nó e devolve data que estava naquele Nó,
     // então realizaremos o free no data retornado
-    void *data = removePos(list,pos);
-    free(data);
+    aux=getNodeByPos(list,pos-1);
+    removed=aux->next;
+    aux->next=removed->next;
+    removed->data=0;
+    free(removed->data);
+    free(removed);
     return true;
 }
