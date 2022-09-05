@@ -15,7 +15,7 @@ void init (LinkedList *list){
 }
 
 bool isEmpty(LinkedList *list){
-    if(list->first==NULL) return 1;
+    if(list->size==0) return 1;
     return 0; 
 }
 
@@ -86,6 +86,7 @@ int add(LinkedList *listDest, int pos, void* data){
     }
     Node* aux = getNodeByPos(listDest,pos-1);
     Node *newNode = (Node*)malloc(sizeof(Node));
+    newNode->data=data;
     newNode->next=aux->next;
     aux->next=newNode;
     return 1;
@@ -133,7 +134,6 @@ Node* getNodeByPos(LinkedList *list, int pos){
 
     //Se não for o primeiro item da lista, vai comparando os demais
     Node * aux=list->first;
-    if(aux==NULL) return NULL;
     for(int count = 0; (aux!=NULL && count<pos); count++,aux=aux->next);
     return aux;
 }
@@ -145,7 +145,6 @@ void* getPos(LinkedList *list, int pos){
     //Chama getNodeByPos para conseguir o nó daquela posição e, então, o endereço data armazenado naquele nó
     Node *aux=getNodeByPos(list,pos);
     void *data = aux->data;
-    if(aux==NULL) return NULL;
     return aux->data;
 }
 
@@ -157,11 +156,9 @@ void* removePos(LinkedList *list, int pos){
 
     // Chama nó que está a uma posição anterior da solicitada
     Node *aux = getNodeByPos(list,pos-1);
-    if(aux==NULL) return NULL;
 
     // Coloca o nó posterior de pos como o next do nó posterior de pos
     Node *removed = aux->next;
-    if(removed=NULL) return NULL;
     aux->next=removed->next;
     void *data= removed->data;
     free(removed);

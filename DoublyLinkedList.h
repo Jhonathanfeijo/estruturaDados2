@@ -33,7 +33,5 @@ void* removePos(DoublyLinkedList *list, int pos);
 bool removeData(DoublyLinkedList *list, void *data, compare equal);
 void show(DoublyLinkedList *list, printNode print);
 void showMem(DoublyLinkedList *list);
-void show(DoublyLinkedList *list, printNode print);
-void showMem(DoublyLinkedList *list);
 
 #endif
