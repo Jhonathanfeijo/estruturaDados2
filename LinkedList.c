@@ -52,7 +52,6 @@ void* first(LinkedList *list){
     if(isEmpty(list))return NULL;
     Node *aux = list->first;
     void *data=aux->data;
-    free(aux);
     return data;
 }
 void* last(LinkedList *list){
@@ -86,9 +85,11 @@ int add(LinkedList *listDest, int pos, void* data){
     }
     Node* aux = getNodeByPos(listDest,pos-1);
     Node *newNode = (Node*)malloc(sizeof(Node));
+    if(newNode==NULL)return -1;
     newNode->data=data;
     newNode->next=aux->next;
     aux->next=newNode;
+    listDest->size++;
     return 1;
 
 }
@@ -173,12 +174,11 @@ bool removeData(LinkedList *list, void *data, compare equal){
     int pos=indexOf(list,data,equal);
 
     if(pos==-1) return false;
-    Node *aux = NULL;
-    Node *removed = NULL;
+
 
     // Caso seja a primeira posição, (pos==0), tornaremos o segundo nó em primeiro no LinkedList e posteriormente faremos o free no antigo first->data e no antigo first
     if(pos==0){
-        removed=list->first;
+        Node *removed=list->first;
         list->first=removed->next;
         removed->data=0;
         free(removed->data);
@@ -188,8 +188,8 @@ bool removeData(LinkedList *list, void *data, compare equal){
     }
     // Caso não atenda as condições anteriores, chamaremos a função removePos que realiza o free no nó e devolve data que estava naquele Nó,
     // então realizaremos o free no data retornado
-    aux=getNodeByPos(list,pos-1);
-    removed=aux->next;
+    Node* aux=getNodeByPos(list,pos-1);
+    Node *removed=aux->next;
     aux->next=removed->next;
     removed->data=0;
     free(removed->data);

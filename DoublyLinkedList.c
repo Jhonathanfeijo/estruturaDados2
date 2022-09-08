@@ -105,7 +105,7 @@ Node* getNodeByPos(DoublyLinkedList *list,int pos){
     if(isEmpty(list)) return NULL;
     if(pos>=list->size) return NULL;
     Node * aux = list->first->next;
-    for(int i=0;i<=pos;i++){
+    for(int i=0;i<pos;i++){
     aux=aux->next;
     }
     return aux;
@@ -159,18 +159,35 @@ bool removeData(DoublyLinkedList *list, void *data, compare equal){
 
 }
 int addAll(DoublyLinkedList *listDest, int pos, DoublyLinkedList *listSource){
-    Node *aux =getNodeByPos(listSource,pos);
-    if(aux==NULL || isEmpty(listDest)) return -1;
-    listDest->first->previous->next=aux;
-    listDest->first->next->previous=aux->previous;
-    aux->previous->next=listDest->first->next;
-    aux->previous=listDest->first->previous;
-    listSource->size+=listDest->size;
-    return listSource->size;
+    Node *aux =getNodeByPos(listDest,pos);
+    if(aux==NULL || isEmpty(listSource)) return -1;
+    listSource->first->previous->next=aux;
+    listSource->first->next->previous=aux->previous;
+    aux->previous->next=listSource->first->next;
+    aux->previous=listSource->first->previous;
+    listDest->size+=listSource->size;
+    return listDest->size;
 }
 void show(DoublyLinkedList *list, printNode print){
-
+    if(!isEmpty(list)){
+        Node* aux = list->first->next;
+        while(aux!=list->first){
+            print(aux->data);
+            aux=aux->next;
+        }
+    }
 }
+
 void showMem(DoublyLinkedList *list){
-    
+    if(!isEmpty(list)){
+        Node* aux = list->first;
+        int contador = 0;
+        printf("\n\n Memoria do No  -  Memoria do Dado  -  Memoria  do Previous  -  Memoria do Next  -  \n\n");
+        printf(" %p  -   %px  -  %p  -  %p  - \n\n",aux,aux->data,aux->previous,aux->next);
+        aux=aux->next;
+        while(aux!=list->first){
+            printf(" %p  -   %p  -  %p  -  %p  - \n\n",aux,aux->data,aux->previous,aux->next);
+            aux=aux->next;
+        }
+    }
 }
