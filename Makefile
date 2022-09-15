@@ -19,6 +19,7 @@ linkedlist:
 	@echo "Compilando o exemplo de lista simplesmente ligada."
 	gcc log.h log.c DoublyLinkedList.h DoublyLinkedList.c DoublyLinkedListTest.c -o doublylinkedlist
 	chmod +x doublylinkedlist
+	
 clean:
 	@echo ""
 	@echo "============================="
