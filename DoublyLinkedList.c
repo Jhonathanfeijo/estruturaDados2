@@ -144,7 +144,7 @@ void* removePos(DoublyLinkedList *list, int pos){
 }
 
 bool removeData(DoublyLinkedList *list, void *data, compare equal){
-    if(isEmpty(list)) return -1;
+    if(isEmpty(list)) return 0;
     Node* aux =list->first->next;
     while(!equal(aux->data,data) && aux!=list->first){
         aux=aux->next;
