@@ -4,7 +4,7 @@
 #define MAX 10
 
 typedef struct HashStruct {
-    DoublyLinkedList hashes[MAX];
+    DoublyLinkedList hashes[2500];
     int size;
 }HashStruct;
 
